@@ -1,7 +1,7 @@
 {
-  "name": "GrowthStarter Community",
-  "short_name": "GrowthStarter",
-  "description": "Launch your vision with crowdfunding and community.",
+  "name": "GrowthLab Community",
+  "short_name": "GrowthLab",
+  "description": "Connect with communities and launch your vision with crowdfunding.",
   "start_url": "/community/browse",
   "display": "standalone",
   "background_color": "#ffffff",

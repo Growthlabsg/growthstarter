@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GrowthStarter - Launch Your Vision with Crowdfunding",
-  description: "GrowthStarter is your integrated crowdfunding platform to launch campaigns, connect with backers, and raise funds for your innovative projects.",
-  keywords: ["crowdfunding", "startup", "funding", "campaign", "backers", "innovation"],
+  title: "GrowthLab Community",
+  description: "Connect with communities, discover discussions, and launch your vision with crowdfunding.",
+  keywords: ["crowdfunding", "community", "startup", "funding", "campaign", "backers", "innovation"],
   manifest: "/manifest.json",
 };
 
