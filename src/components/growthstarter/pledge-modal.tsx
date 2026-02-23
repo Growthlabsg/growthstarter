@@ -261,7 +261,7 @@ export function PledgeModal({
               <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 text-sm flex gap-2">
                 <AlertCircle className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
                 <p className="text-amber-800 dark:text-amber-200">
-                  You won't be charged unless this project reaches its funding goal by {project.endDate}.
+                  You won&apos;t be charged unless this project reaches its funding goal by {project.endDate}.
                 </p>
               </div>
 

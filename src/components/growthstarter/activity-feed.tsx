@@ -300,7 +300,7 @@ export function ActivityFeed({ variant = 'full', limit = 10, projectId }: Activi
                   )}
                   {activity.message && (
                     <p className="text-xs text-slate-500 mt-1 italic">
-                      "{activity.message}"
+                      &quot;{activity.message}&quot;
                     </p>
                   )}
                   <p className="text-xs text-slate-400 mt-1">
@@ -336,7 +336,7 @@ export function ActivityFeed({ variant = 'full', limit = 10, projectId }: Activi
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">Activity Feed</h2>
-              <p className="text-sm text-slate-600 dark:text-slate-400">See what's happening in real-time</p>
+              <p className="text-sm text-slate-600 dark:text-slate-400">See what&apos;s happening in real-time</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -387,7 +387,7 @@ export function ActivityFeed({ variant = 'full', limit = 10, projectId }: Activi
                     )}
                     {activity.message && (
                       <p className="text-sm text-slate-500 mt-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg italic">
-                        "{activity.message}"
+                        &quot;{activity.message}&quot;
                       </p>
                     )}
                   </div>

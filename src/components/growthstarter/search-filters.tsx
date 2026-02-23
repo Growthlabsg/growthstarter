@@ -323,7 +323,7 @@ export function SearchFilters({
                 )}
                 {searchTerm && (
                   <Badge variant="secondary" className="rounded-full px-3 py-1">
-                    Search: "{searchTerm}"
+                    Search: &quot;{searchTerm}&quot;
                     <button
                       onClick={() => onSearchChange("")}
                       className="ml-1.5 hover:text-red-500"

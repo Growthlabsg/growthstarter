@@ -72,7 +72,7 @@ function projectFutureFunding(project: Project, history: ReturnType<typeof gener
   
   const projection = []
   let lastRaised = project.raised
-  let lastDay = history.length
+  const lastDay = history.length
   
   for (let i = 1; i <= remainingDays; i++) {
     // Slight decay in daily funding over time

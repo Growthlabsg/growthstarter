@@ -214,7 +214,6 @@ export default function CommunitySlugPage() {
         onCreateEvent={isBuilder ? handleCreateEvent : undefined}
         onCreateResource={isBuilder ? handleCreateResource : undefined}
         canPinPosts={canPinPosts}
-        allCommunities={allCommunities}
         getCommunitiesForMember={getCommunitiesForMember}
       />
     </div>
