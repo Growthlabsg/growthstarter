@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: "GrowthStarter - Launch Your Vision with Crowdfunding",
   description: "GrowthStarter is your integrated crowdfunding platform to launch campaigns, connect with backers, and raise funds for your innovative projects.",
   keywords: ["crowdfunding", "startup", "funding", "campaign", "backers", "innovation"],
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

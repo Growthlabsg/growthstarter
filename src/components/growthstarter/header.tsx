@@ -2,8 +2,15 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Notification } from "@/types"
 import {
   Rocket,
@@ -18,6 +25,7 @@ import {
   Compass,
   Briefcase,
   ChevronUp,
+  ChevronDown,
   Flame,
   Star,
   DollarSign,
@@ -29,7 +37,11 @@ import {
   CheckCheck,
   Trash2,
   Sun,
-  Moon
+  Moon,
+  Users,
+  FolderOpen,
+  TrendingUp,
+  Wrench,
 } from "lucide-react"
 
 interface NavItem {
@@ -38,12 +50,23 @@ interface NavItem {
   icon: React.ElementType
   href?: string
   isSection?: boolean
+  isDropdown?: boolean
 }
+
+const communityDropdownItems = [
+  { label: "Browse Directory", href: "/community/browse", icon: FolderOpen },
+  { label: "My Communities", href: "/community/my", icon: Users },
+  { label: "Create New Community", href: "/community/create", icon: Plus },
+  { label: "Trending", href: "/community/trending", icon: TrendingUp },
+  { label: "For You", href: "/community/for-you", icon: Star },
+  { label: "For Builders", href: "/community/builders", icon: Wrench },
+] as const
 
 const navItems: NavItem[] = [
   { id: 'discover', label: 'Discover', icon: Compass, href: '/' },
   { id: 'trending', label: 'Trending', icon: Flame, isSection: true },
   { id: 'featured', label: 'Featured', icon: Star, isSection: true },
+  { id: 'community', label: 'Community', icon: Users, href: '/community/browse', isDropdown: true },
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { id: 'campaigns', label: 'Campaigns', icon: Briefcase, href: '/dashboard?tab=campaigns' },
 ]
@@ -87,12 +110,15 @@ export function Header({
   onMarkAllNotificationsAsRead,
   onDeleteNotification
 }: HeaderProps) {
+  const pathname = usePathname()
   const [isVisible, setIsVisible] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('discover')
   const [showNotifications, setShowNotifications] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
   const notificationRef = useRef<HTMLDivElement>(null)
+
+  const isCommunityActive = pathname?.startsWith("/community") ?? false
 
   const unreadCount = notifications.filter(n => !n.read).length
 
@@ -410,8 +436,41 @@ export function Header({
             <div className="flex items-center gap-1 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl dark:shadow-2xl dark:shadow-black/20 rounded-full px-3 py-1.5 border border-slate-200/50 dark:border-slate-700/50">
               {navItems.map((item) => {
                 const Icon = item.icon
-                const isActive = activeSection === item.id
-                
+                const isActive = item.id === "community" ? isCommunityActive : activeSection === item.id
+
+                if (item.isDropdown && item.id === "community") {
+                  return (
+                    <DropdownMenu key={item.id}>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                            isActive
+                              ? "gs-gradient text-white shadow-md"
+                              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4" />
+                          <span className={isActive ? "" : "hidden xl:inline"}>{item.label}</span>
+                          <ChevronDown className="h-3.5 w-3.5 ml-0.5" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="center" className="w-56 rounded-xl">
+                        {communityDropdownItems.map((d) => {
+                          const DIcon = d.icon
+                          return (
+                            <DropdownMenuItem key={d.href} asChild>
+                              <Link href={d.href} className="flex items-center gap-2 cursor-pointer">
+                                <DIcon className="h-4 w-4" />
+                                {d.label}
+                              </Link>
+                            </DropdownMenuItem>
+                          )
+                        })}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )
+                }
+
                 if (item.href && !item.isSection) {
                   return (
                     <Link
@@ -420,7 +479,7 @@ export function Header({
                       className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
                         isActive 
                           ? 'gs-gradient text-white shadow-md' 
-                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700'
                       }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -436,7 +495,7 @@ export function Header({
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium transition-all ${
                       isActive 
                         ? 'gs-gradient text-white shadow-md' 
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700'
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -577,12 +636,37 @@ export function Header({
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute bottom-16 right-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden animate-in slide-in-from-bottom-2 duration-200">
+          <div className="absolute bottom-16 right-0 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in slide-in-from-bottom-2 duration-200">
             <div className="p-2 max-h-[60vh] overflow-y-auto">
               {/* Navigation Items */}
               {navItems.map((item) => {
                 const Icon = item.icon
-                const isActive = activeSection === item.id
+                const isActive = item.id === "community" ? isCommunityActive : activeSection === item.id
+
+                if (item.id === "community" && item.isDropdown) {
+                  return (
+                    <div key={item.id} className="py-1">
+                      <div className={`flex items-center gap-3 px-4 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider ${isActive ? "text-[#0F7377] dark:text-teal-400" : ""}`}>
+                        <Icon className="h-4 w-4" />
+                        {item.label}
+                      </div>
+                      {communityDropdownItems.map((d) => {
+                        const DIcon = d.icon
+                        return (
+                          <Link
+                            key={d.href}
+                            href={d.href}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="w-full flex items-center gap-3 pl-8 pr-4 py-2.5 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
+                          >
+                            <DIcon className="h-4 w-4 text-slate-400" />
+                            {d.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )
+                }
                 
                 if (item.href && !item.isSection) {
                   return (
@@ -592,8 +676,8 @@ export function Header({
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                         isActive 
-                          ? 'bg-[#0F7377]/10 text-[#0F7377]' 
-                          : 'text-slate-600 hover:bg-slate-50'
+                          ? 'bg-[#0F7377]/10 text-[#0F7377] dark:bg-teal-500/20 dark:text-teal-400' 
+                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                       }`}
                     >
                       <Icon className="h-5 w-5" />
@@ -608,8 +692,8 @@ export function Header({
                     onClick={() => handleNavClick(item)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                       isActive 
-                        ? 'bg-[#0F7377]/10 text-[#0F7377]' 
-                        : 'text-slate-600 hover:bg-slate-50'
+                        ? 'bg-[#0F7377]/10 text-[#0F7377] dark:bg-teal-500/20 dark:text-teal-400' 
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                     }`}
                   >
                     <Icon className="h-5 w-5" />

@@ -1,0 +1,11 @@
+{
+  "name": "GrowthStarter Community",
+  "short_name": "GrowthStarter",
+  "description": "Launch your vision with crowdfunding and community.",
+  "start_url": "/community/browse",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0F7377",
+  "orientation": "portrait-primary",
+  "icons": []
+}
